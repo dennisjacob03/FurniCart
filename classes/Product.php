@@ -12,7 +12,7 @@ class Product
 		$stmt = $this->pdo->query("SELECT COUNT(*) as total FROM products");
 		return $stmt->fetch()['total'];
 	}
-	
+
 	public function getAllProducts()
 	{
 		$stmt = $this->pdo->query("SELECT * FROM products ORDER BY created_at DESC");
@@ -26,5 +26,25 @@ class Product
 		return $stmt->fetch();
 	}
 
-	
+	public function addProduct($name, $description, $price, $category, $image, $stock)
+	{
+		$sql = "INSERT INTO products (name, description, price, category, image, stock) 
+				VALUES (?, ?, ?, ?, ?, ?)";
+		$stmt = $this->pdo->prepare($sql);
+		return $stmt->execute([$name, $description, $price, $category, $image, $stock]);
+	}
+
+	public function getCategories()
+	{
+		$stmt = $this->pdo->query("SELECT DISTINCT category FROM products ORDER BY category");
+		return $stmt->fetchAll(PDO::FETCH_COLUMN);
+	}
+
+	public function getImageUrl($image)
+	{
+		if (filter_var($image, FILTER_VALIDATE_URL)) {
+			return $image;
+		}
+		return "/FurniCart/uploads/products/" . $image;
+	}
 }

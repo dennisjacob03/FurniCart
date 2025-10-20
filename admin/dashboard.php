@@ -5,10 +5,6 @@ require_once '../classes/User.php';
 require_once '../classes/Product.php';
 require_once '../classes/Order.php';
 
-header("X-Frame-Options: DENY");
-header("X-XSS-Protection: 1; mode=block");
-header("X-Content-Type-Options: nosniff");
-
 $userModel = new User($pdo);
 $productModel = new Product($pdo);
 $orderModel = new Order($pdo);
@@ -21,35 +17,56 @@ $pendingOrders = $orderModel->countOrders('pending');
 $paidOrders = $orderModel->countOrders('paid');
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<?php include 'admin_header.php'; ?>
 
-<head>
-	<meta charset="UTF-8">
-	<title>Admin Dashboard</title>
-	<link rel="stylesheet" href="../assets/css/styles.css">
-</head>
-
-<body>
-	<?php include '../includes/header.php'; ?>
-
-	<h1>Welcome, Admin!</h1>
-
-	<div class="stats">
-		<div>Total Users: <?= $totalUsers ?></div>
-		<div>Total Products: <?= $totalProducts ?></div>
-		<div>Total Orders: <?= $totalOrders ?></div>
-		<div>Pending Orders: <?= $pendingOrders ?></div>
-		<div>Paid Orders: <?= $paidOrders ?></div>
+<main class="admin-main">
+	<div class="admin-header">
+		<h1>Admin Dashboard</h1>
+		<p>Welcome back! Here's your administration overview.</p>
 	</div>
 
-	<nav>
-		<a href="manage_users.php">Manage Users</a> |
-		<a href="manage_products.php">Manage Products</a> |
-		<a href="../public/logout.php">Logout</a>
-	</nav>
+	<div class="dashboard-grid">
+		<div class="stat-card users">
+			<div class="stat-icon">👥</div>
+			<div class="stat-details">
+				<h3>Users</h3>
+				<p class="stat-number"><?= $totalUsers ?></p>
+				<a href="manage_users.php" class="view-details">View Details →</a>
+			</div>
+		</div>
 
-	<?php include '../includes/footer.php'; ?>
+		<div class="stat-card products">
+			<div class="stat-icon">🛋</div>
+			<div class="stat-details">
+				<h3>Products</h3>
+				<p class="stat-number"><?= $totalProducts ?></p>
+				<a href="manage_products.php" class="view-details">View Details →</a>
+			</div>
+		</div>
+
+		<div class="stat-card orders">
+			<div class="stat-icon">📦</div>
+			<div class="stat-details">
+				<h3>Orders</h3>
+				<p class="stat-number"><?= $totalOrders ?></p>
+				<a href="manage_orders.php" class="view-details">View Details →</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="order-status">
+		<div class="status-card pending">
+			<h4>Pending Orders</h4>
+			<p class="number"><?= $pendingOrders ?></p>
+		</div>
+		<div class="status-card completed">
+			<h4>Completed Orders</h4>
+			<p class="number"><?= $paidOrders ?></p>
+		</div>
+	</div>
+</main>
+
+</div>
 </body>
 
 </html>

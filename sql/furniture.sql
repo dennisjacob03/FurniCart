@@ -14,7 +14,8 @@ CREATE TABLE users (
 	address TEXT NULL,
 	pincode VARCHAR(6) NULL,
 	city VARCHAR(100) NULL,
-	state VARCHAR(100) NULL;
+	state VARCHAR(100) NULL,
+  status ENUM('active', 'inactive') DEFAULT 'active',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
@@ -66,4 +67,12 @@ CREATE TABLE order_items (
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(product_id),
     INDEX (order_id)
+) ENGINE=InnoDB;
+
+-- CATEGORIES TABLE
+CREATE TABLE categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    image TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;

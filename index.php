@@ -5,9 +5,26 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/classes/Product.php';
+require_once __DIR__ . '/classes/Category.php';
 
 $productModel = new Product($pdo);
+$categoryModel = new Category($pdo);
+
 $products = $productModel->getAllProducts();
+$categories = $categoryModel->getAllCategories();
+
+function getImageSrc($image, $type = 'products', $default = 'placeholder.jpg')
+{
+	if (empty($image)) {
+		return "/FurniCart/assets/img/{$default}";
+	}
+
+	if (filter_var($image, FILTER_VALIDATE_URL)) {
+		return $image;
+	}
+
+	return "/FurniCart/uploads/{$type}/" . $image;
+}
 ?>
 
 <!DOCTYPE html>
@@ -58,31 +75,20 @@ $products = $productModel->getAllProducts();
 	<section class="categories">
 		<h2 class="section-title">Choose Your Category</h2>
 		<div class="category-grid">
-			<div class="category-card">
-				<img src="/FurniCart/assets/img/sofa_default.png" alt="Sofas">
-				<h3>Sofas</h3>
-				<p>Luxury & Comfort</p>
-			</div>
-			<div class="category-card">
-				<img src="/FurniCart/assets/img/table_default.png" alt="Tables">
-				<h3>Tables</h3>
-				<p>Elegant Designs</p>
-			</div>
-			<div class="category-card">
-				<img src="/FurniCart/assets/img/chair_default.png" alt="Chairs">
-				<h3>Chairs</h3>
-				<p>Stylish Seating</p>
-			</div>
-			<div class="category-card">
-				<img src="/FurniCart/assets/img/bed_default.png" alt="Beds">
-				<h3>Beds</h3>
-				<p>Peaceful Sleep</p>
-			</div>
-			<div class="category-card">
-				<img src="/FurniCart/assets/img/almirah_default.png" alt="Almirah">
-				<h3>Almirah</h3>
-				<p>Storage Solutions</p>
-			</div>
+			<?php foreach ($categories as $category): ?>
+				<div class="category-card">
+					<?php
+					$imageSrc = $category['image'] ?
+						(filter_var($category['image'], FILTER_VALIDATE_URL) ?
+							$category['image'] :
+							"/FurniCart/uploads/categories/" . $category['image']
+						) :
+						"/FurniCart/assets/img/{$category['name']}_default.png";
+					?>
+					<img src="<?php echo htmlspecialchars($imageSrc); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>">
+					<h3><?php echo htmlspecialchars($category['name']); ?></h3>
+				</div>
+			<?php endforeach; ?>
 		</div>
 	</section>
 
@@ -93,16 +99,19 @@ $products = $productModel->getAllProducts();
 			<?php foreach ($products as $p): ?>
 				<div class="product-card">
 					<div class="product-image">
-						<img src="/FurniCart/uploads/<?php echo htmlspecialchars($p['image'] ?: 'placeholder.jpg'); ?>"
-							alt="<?php echo htmlspecialchars($p['name']); ?>">
+						<?php
+						$imageSrc = $p['image'] ?
+							(filter_var($p['image'], FILTER_VALIDATE_URL) ?
+								$p['image'] :
+								"/FurniCart/uploads/products/" . $p['image']
+							) :
+							'/FurniCart/assets/img/placeholder.jpg';
+						?>
+						<img src="<?php echo htmlspecialchars($imageSrc); ?>" alt="<?php echo htmlspecialchars($p['name']); ?>">
 					</div>
 					<div class="product-info">
 						<h3><?php echo htmlspecialchars($p['name']); ?></h3>
 						<div class="product-price">₹<?php echo number_format($p['price'], 2); ?></div>
-						<div class="product-rating">
-							<span class="stars">★★★★★</span>
-							<span class="rating">(5.0)</span>
-						</div>
 						<a href="product.php?id=<?php echo $p['product_id']; ?>" class="btn-view">View Details</a>
 					</div>
 				</div>
