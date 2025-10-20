@@ -12,6 +12,7 @@ require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/classes/Cart.php';
 require_once __DIR__ . '/classes/User.php';
 require_once __DIR__ . '/classes/Product.php';
+require_once __DIR__ . '/config/razorpay_config.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -246,7 +247,20 @@ function getImageSrc($image, $type = 'products', $default = 'placeholder.jpg')
 				position: static;
 			}
 		}
+
+		.loading {
+			display: none;
+			text-align: center;
+			margin-top: 10px;
+			color: #666;
+		}
+
+		.payment-btn:disabled {
+			background: #6c757d;
+			cursor: not-allowed;
+		}
 	</style>
+	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 
 <body>
@@ -312,9 +326,10 @@ function getImageSrc($image, $type = 'products', $default = 'placeholder.jpg')
 					<span>₹<?php echo number_format($grandTotal, 2); ?></span>
 				</div>
 
-				<button class="payment-btn" onclick="alert('Payment gateway integration coming soon!')">
+				<button class="payment-btn" id="payBtn" onclick="initiatePayment()">
 					Proceed to Payment
 				</button>
+				<div class="loading" id="loading">Processing...</div>
 
 				<a href="/FurniCart/cart.php" class="back-to-cart">← Back to Cart</a>
 			</div>
@@ -322,6 +337,105 @@ function getImageSrc($image, $type = 'products', $default = 'placeholder.jpg')
 	</div>
 
 	<?php include 'includes/footer.php'; ?>
+
+	<script>
+		function initiatePayment() {
+			const payBtn = document.getElementById('payBtn');
+			const loading = document.getElementById('loading');
+			
+			// Disable button and show loading
+			payBtn.disabled = true;
+			loading.style.display = 'block';
+			
+			// Create Razorpay order
+			fetch('/FurniCart/create_razorpay_order.php', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (!data.success) {
+					throw new Error(data.message || 'Failed to create order');
+				}
+				
+				// Open Razorpay checkout
+				const options = {
+					key: data.key,
+					amount: data.amount,
+					currency: data.currency,
+					name: data.name,
+					description: data.description,
+					order_id: data.order_id,
+					prefill: data.prefill,
+					theme: {
+						color: '#007bff'
+					},
+					handler: function(response) {
+						// Payment successful, verify on server
+						verifyPayment(response);
+					},
+					modal: {
+						ondismiss: function() {
+							// User closed the payment modal
+							payBtn.disabled = false;
+							loading.style.display = 'none';
+						}
+					}
+				};
+				
+				const rzp = new Razorpay(options);
+				rzp.open();
+				
+				// Re-enable button after modal opens
+				payBtn.disabled = false;
+				loading.style.display = 'none';
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert('Failed to initiate payment: ' + error.message);
+				payBtn.disabled = false;
+				loading.style.display = 'none';
+			});
+		}
+		
+		function verifyPayment(response) {
+			const payBtn = document.getElementById('payBtn');
+			const loading = document.getElementById('loading');
+			
+			payBtn.disabled = true;
+			loading.style.display = 'block';
+			loading.textContent = 'Verifying payment...';
+			
+			// Send payment details to server for verification
+			const formData = new FormData();
+			formData.append('razorpay_order_id', response.razorpay_order_id);
+			formData.append('razorpay_payment_id', response.razorpay_payment_id);
+			formData.append('razorpay_signature', response.razorpay_signature);
+			
+			fetch('/FurniCart/verify_payment.php', {
+				method: 'POST',
+				body: formData
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					// Redirect to success page
+					window.location.href = '/FurniCart/order_success.php?order_id=' + data.order_id;
+				} else {
+					throw new Error(data.message || 'Payment verification failed');
+				}
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert('Payment verification failed: ' + error.message);
+				payBtn.disabled = false;
+				loading.style.display = 'none';
+				loading.textContent = 'Processing...';
+			});
+		}
+	</script>
 </body>
 
 </html>

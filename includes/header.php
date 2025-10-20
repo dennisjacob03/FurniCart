@@ -53,6 +53,9 @@
 				<div class="nav-center">
 					<a href="/FurniCart/index.php">Home</a>
 					<a href="/FurniCart/product.php">Products</a>
+					<?php if (isset($_SESSION['user_id'])): ?>
+						<a href="/FurniCart/my_orders.php">My Orders</a>
+					<?php endif; ?>
 					<a href="/FurniCart/cart.php" class="cart-link">
 						Cart
 						<?php if (isset($_SESSION['user_id'])): ?>
@@ -79,6 +82,7 @@
 								</div>
 								<div class="dropdown-content">
 									<a href="/FurniCart/profile.php">My Profile</a>
+									<a href="/FurniCart/my_orders.php">My Orders</a>
 									<a href="/FurniCart/logout.php">Log Out</a>
 								</div>
 							</div>
