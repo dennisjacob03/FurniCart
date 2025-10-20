@@ -51,4 +51,10 @@ class User
 		return $stmt->fetch()['total'];
 	}
 
+	public function updateAddress($user_id, $address, $pincode, $city, $state)
+	{
+		$sql = "UPDATE users SET address = ?, pincode = ?, city = ?, state = ? WHERE user_id = ?";
+		$stmt = $this->pdo->prepare($sql);
+		return $stmt->execute([$address, $pincode, $city, $state, $user_id]);
+	}
 }

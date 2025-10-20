@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once __DIR__ . '/../classes/User.php';
-require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/classes/User.php';
+require_once __DIR__ . '/includes/db.php';
 
 $error = ''; // Initialize error variable
 
@@ -20,12 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		// Store user info in session
 		$_SESSION['user_id'] = $user['user_id'];
 		$_SESSION['role'] = $user['role'];
+		$_SESSION['name'] = $user['name'];
 
 		// Fix redirect paths
 		if ($user['role'] === 'admin') {
 			header("Location: /FurniCart/admin/dashboard.php");
 		} else {
-			header("Location: /FurniCart/public/index.php");
+			header("Location: /FurniCart/index.php");
 		}
 		exit;
 	} else {
@@ -41,6 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<title>Login - FurniCart</title>
 	<link rel="stylesheet" href="/FurniCart/assets/css/style.css">
 	<style>
+		body{
+			padding-top: 0;
+		}
 		.logo {
 			margin: 20px;
 			display: block;
@@ -54,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-	<a href="/FurniCart/public/index.php" class="logo">
+	<a href="/FurniCart/index.php" class="logo">
 		<img src="/FurniCart/assets/img/logo.png" alt="FurniCart Logo">
 	</a>
 	<div class="auth-container">

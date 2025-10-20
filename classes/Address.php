@@ -8,24 +8,22 @@ class Address
 		$this->pdo = $pdo;
 	}
 
-	// Add new address
-	public function addAddress($user_id, $address, $city, $state, $country, $pincode)
+	public function addAddress($user_id, $address, $city, $state, $pincode)
 	{
-		$sql = "INSERT INTO addresses (user_id, address_line, city, state, country, pincode)
-                VALUES (?,?,?,?,?,?)";
+		$sql = "INSERT INTO addresses (user_id, address, city, state, pincode) 
+                VALUES (?, ?, ?, ?, ?)";
 		$stmt = $this->pdo->prepare($sql);
-		return $stmt->execute([$user_id, $address, $city, $state, $country, $pincode]);
+		return $stmt->execute([$user_id, $address, $city, $state, $pincode]);
 	}
 
-	// Get all addresses for a user
 	public function getUserAddresses($user_id)
 	{
-		$stmt = $this->pdo->prepare("SELECT * FROM addresses WHERE user_id = ?");
+		$sql = "SELECT * FROM addresses WHERE user_id = ? ORDER BY address_id DESC";
+		$stmt = $this->pdo->prepare($sql);
 		$stmt->execute([$user_id]);
-		return $stmt->fetchAll();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	// Get one address
 	public function getAddressById($address_id)
 	{
 		$stmt = $this->pdo->prepare("SELECT * FROM addresses WHERE address_id = ?");

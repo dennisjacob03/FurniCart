@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/db.php';
-require_once __DIR__ . '/../classes/User.php';
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/classes/User.php';
 
 $userModel = new User($pdo);
 $msg = '';
@@ -61,6 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<title>Register - FurniCart</title>
 	<link rel="stylesheet" href="/FurniCart/assets/css/style.css">
 	<style>
+		body{
+			padding-top: 0;
+		}
 		.logo {
 			margin: 20px;
 			display: block;
@@ -84,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-	<a href="/FurniCart/public/index.php" class="logo">
+	<a href="index.php" class="logo">
 		<img src="/FurniCart/assets/img/logo.png" alt="FurniCart Logo">
 	</a>
 	<div class="auth-container">

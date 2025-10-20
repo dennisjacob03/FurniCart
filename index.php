@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/db.php';
-require_once __DIR__ . '/../classes/Product.php';
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/classes/Product.php';
 
 $productModel = new Product($pdo);
 $products = $productModel->getAllProducts();
@@ -38,7 +38,7 @@ $products = $productModel->getAllProducts();
 </head>
 
 <body>
-	<?php include '../includes/header.php'; ?>
+	<?php include 'includes/header.php'; ?>
 
 	<!-- Hero Section -->
 	<div class="hero">
@@ -106,7 +106,7 @@ $products = $productModel->getAllProducts();
 		</div>
 	</section>
 
-	<?php include '../includes/footer.php'; ?>
+	<?php include 'includes/footer.php'; ?>
 </body>
 
 </html>

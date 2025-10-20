@@ -11,20 +11,11 @@ CREATE TABLE users (
   phone VARCHAR(15) NOT NULL,
   password VARCHAR(255) NOT NULL,
   role ENUM('user','admin') DEFAULT 'user',
+	address TEXT NULL,
+	pincode VARCHAR(6) NULL,
+	city VARCHAR(100) NULL,
+	state VARCHAR(100) NULL;
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
-
--- ADDRESSES TABLE (linked to users)
-CREATE TABLE addresses (
-  address_id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  address_line VARCHAR(255) NOT NULL,
-  city VARCHAR(100) NOT NULL,
-  state VARCHAR(100) NOT NULL,
-  country VARCHAR(100) NOT NULL,
-  pincode VARCHAR(10) NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-  INDEX (user_id)
 ) ENGINE=InnoDB;
 
 -- PRODUCTS TABLE
@@ -55,7 +46,6 @@ CREATE TABLE cart (
 CREATE TABLE orders (
   order_id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
-  address_id INT NOT NULL,
   total_amount DECIMAL(10,2) NOT NULL,
   payment_method VARCHAR(50),
   payment_status ENUM('pending','paid','failed') DEFAULT 'pending',
