@@ -1,7 +1,0 @@
-/vendor/
-/.idea/
-/node_modules/
-/uploads/
-/config.php
-/.env
-*.log
