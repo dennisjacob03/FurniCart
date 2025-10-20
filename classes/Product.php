@@ -34,6 +34,13 @@ class Product
 		return $stmt->execute([$name, $description, $price, $category, $image, $stock]);
 	}
 
+	public function getProductsByCategory($category)
+	{
+		$stmt = $this->pdo->prepare("SELECT * FROM products WHERE category = ? ORDER BY created_at DESC");
+		$stmt->execute([$category]);
+		return $stmt->fetchAll();
+	}
+
 	public function getCategories()
 	{
 		$stmt = $this->pdo->query("SELECT DISTINCT category FROM products ORDER BY category");

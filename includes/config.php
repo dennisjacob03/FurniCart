@@ -2,7 +2,7 @@
 // includes/config.php - NOT committed with real credentials (override on server)
 return [
 	'db' => [
-		'host' => '127.0.0.1',
+		'host' => 'localhost',
 		'db' => 'furnicart',
 		'user' => 'root',
 		'pass' => '',

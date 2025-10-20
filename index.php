@@ -1,4 +1,9 @@
 <?php
+// Start session first, before any output
+if (session_status() === PHP_SESSION_NONE) {
+	session_start();
+}
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -55,6 +60,43 @@ function getImageSrc($image, $type = 'products', $default = 'placeholder.jpg')
 			object-fit: cover;
 			border-radius: 10px;
 		}
+
+		/* Category card styles */
+		.category-card {
+			display: block;
+			text-decoration: none;
+			color: inherit;
+			border: 1px solid #e0e0e0;
+			border-radius: 15px;
+			overflow: hidden;
+			transition: all 0.3s ease;
+			background: white;
+		}
+
+		.category-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+			text-decoration: none;
+			color: inherit;
+		}
+
+		.category-card img {
+			width: 100%;
+			height: 200px;
+			object-fit: cover;
+			transition: transform 0.3s ease;
+		}
+
+		.category-card:hover img {
+			transform: scale(1.05);
+		}
+
+		.category-card h3 {
+			padding: 15px;
+			margin: 0;
+			font-size: 18px;
+			color: #333;
+		}
 	</style>
 </head>
 
@@ -67,7 +109,7 @@ function getImageSrc($image, $type = 'products', $default = 'placeholder.jpg')
 		<div class="hero-content">
 			<h1>Unique & Stylish<br>Furniture</h1>
 			<p>Find Your Perfect Piece, Effortlessly.</p>
-			<a href="#products" class="btn-primary">Shop Now</a>
+			<a href="product.php" class="btn-primary">Shop Now</a>
 		</div>
 	</div>
 
@@ -76,7 +118,7 @@ function getImageSrc($image, $type = 'products', $default = 'placeholder.jpg')
 		<h2 class="section-title">Choose Your Category</h2>
 		<div class="category-grid">
 			<?php foreach ($categories as $category): ?>
-				<div class="category-card">
+				<a href="/FurniCart/product.php?category=<?php echo urlencode($category['name']); ?>" class="category-card">
 					<?php
 					$imageSrc = $category['image'] ?
 						(filter_var($category['image'], FILTER_VALIDATE_URL) ?
@@ -87,7 +129,7 @@ function getImageSrc($image, $type = 'products', $default = 'placeholder.jpg')
 					?>
 					<img src="<?php echo htmlspecialchars($imageSrc); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>">
 					<h3><?php echo htmlspecialchars($category['name']); ?></h3>
-				</div>
+				</a>
 			<?php endforeach; ?>
 		</div>
 	</section>

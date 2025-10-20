@@ -11,6 +11,13 @@ $user = $userModel->getUserById($_SESSION['user_id']);
 
 $isEditing = isset($_GET['edit']) && $_GET['edit'] === 'true';
 
+// Check if redirected from checkout
+$checkoutMessage = '';
+if (isset($_SESSION['profile_message'])) {
+	$checkoutMessage = $_SESSION['profile_message'];
+	unset($_SESSION['profile_message']);
+}
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isEditing) {
     $address = trim($_POST['address']);
@@ -186,6 +193,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isEditing) {
 			font-size: 0.875rem;
 			margin-top: 0.25rem;
 		}
+
+		.warning-msg {
+			background: #fff3cd;
+			color: #856404;
+			padding: 1rem;
+			border-radius: 5px;
+			margin-bottom: 1rem;
+			border: 1px solid #ffeaa7;
+		}
 	</style>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="/FurniCart/assets/js/app.js"></script>
@@ -208,6 +224,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isEditing) {
 				<?php endif; ?>
 			</div>
 		</div>
+
+		<?php if ($checkoutMessage): ?>
+			<div class="warning-msg">
+				<?php echo htmlspecialchars($checkoutMessage); ?>
+			</div>
+		<?php endif; ?>
 
 		<div class="profile-sections">
 			<section class="account-details">

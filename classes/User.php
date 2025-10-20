@@ -72,4 +72,19 @@ class User
 		$stmt = $this->pdo->prepare("UPDATE users SET status = ? WHERE user_id = ?");
 		return $stmt->execute([$status, $userId]);
 	}
+
+	// Check if user has complete profile (address details)
+	public function hasCompleteProfile($userId)
+	{
+		$user = $this->getUserById($userId);
+		if (!$user) {
+			return false;
+		}
+		
+		// Check if all required fields are filled
+		return !empty($user['address']) && 
+		       !empty($user['pincode']) && 
+		       !empty($user['city']) && 
+		       !empty($user['state']);
+	}
 }

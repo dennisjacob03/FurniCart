@@ -50,11 +50,14 @@ CREATE TABLE orders (
   total_amount DECIMAL(10,2) NOT NULL,
   payment_method VARCHAR(50),
   payment_status ENUM('pending','paid','failed') DEFAULT 'pending',
+  razorpay_order_id VARCHAR(100),
+  razorpay_payment_id VARCHAR(100),
+  razorpay_signature VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-  FOREIGN KEY (address_id) REFERENCES addresses(address_id) ON DELETE CASCADE,
   INDEX (user_id),
-  INDEX (address_id)
+  INDEX (razorpay_order_id)
 ) ENGINE=InnoDB;
 
 -- ORDER ITEMS TABLE
