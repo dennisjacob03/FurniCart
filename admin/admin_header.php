@@ -28,7 +28,7 @@ if (session_status() === PHP_SESSION_NONE) {
 					<li><a href="/FurniCart/admin/dashboard.php">Dashboard</a></li>
 					<li><a href="/FurniCart/admin/manage_users.php">Users</a></li>
 					<li><a href="/FurniCart/admin/manage_products.php">Products</a></li>
-					<li><a href="/FurniCart/admin/manage_orders.php">Orders</a></li>
+					<li><a href="/FurniCart/admin/view_orders.php">Orders</a></li>
 					<li><a href="/FurniCart/admin/manage_categories.php">Categories</a></li>
 					<li><a href="/FurniCart/logout.php">Logout</a></li>
 				</ul>

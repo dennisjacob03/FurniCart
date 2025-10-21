@@ -49,7 +49,7 @@ $paidOrders = $orderModel->countOrders('paid');
 			<div class="stat-details">
 				<h3>Orders</h3>
 				<p class="stat-number"><?= $totalOrders ?></p>
-				<a href="manage_orders.php" class="view-details">View Details →</a>
+				<a href="view_orders.php" class="view-details">View Details →</a>
 			</div>
 		</div>
 	</div>

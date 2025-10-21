@@ -306,8 +306,8 @@ function getImageSrc($image, $type = 'products', $default = 'placeholder.jpg')
 		</div>
 
 		<div class="action-buttons">
-			<a href="/FurniCart/product.php" class="btn btn-primary">Continue Shopping</a>
-			<a href="/FurniCart/index.php" class="btn btn-secondary">Go to Home</a>
+			<a href="/FurniCart/my_orders.php" class="btn btn-primary">View My Orders</a>
+			<a href="/FurniCart/product.php" class="btn btn-secondary">Continue Shopping</a>
 		</div>
 	</div>
 
