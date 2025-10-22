@@ -37,6 +37,24 @@
 			justify-content: center;
 			line-height: 1;
 		}
+
+		.nav-right a {
+			text-decoration: none;
+			color: white;
+		}
+
+		.signBtn {
+			background-color: #007bff;
+			color: white;
+			padding: 8px 20px;
+			border-radius: 4px;
+			text-decoration: none;
+			font-weight: bold;
+		}
+
+		.signBtn:hover {
+			background-color: #0056b3;
+		}
 	</style>
 </head>
 
@@ -70,6 +88,9 @@
 							<?php endif; ?>
 						<?php endif; ?>
 					</a>
+					<?php if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
+						<a href="/FurniCart/admin/dashboard.php">Admin Dashboard</a>
+					<?php endif; ?>
 				</div>
 
 				<div class="nav-right">
@@ -88,7 +109,7 @@
 							</div>
 						</div>
 					<?php else: ?>
-						<a href="/FurniCart/login.php">Sign In</a>
+						<span class="signBtn"><a href="/FurniCart/login.php">Sign In</a></span>
 					<?php endif; ?>
 				</div>
 			</nav>

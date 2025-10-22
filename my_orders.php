@@ -268,7 +268,7 @@ function getStatusBadge($status)
 
 		.empty-orders {
 			text-align: center;
-			padding: 80px 20px;
+			padding: 120px 20px;
 			background: white;
 			border-radius: 10px;
 			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

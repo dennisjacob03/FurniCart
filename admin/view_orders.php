@@ -297,7 +297,7 @@ function getStatusBadge($status)
 
 	<div class="admin-header">
 		<h1>📦 Orders Management</h1>
-		<p>View and manage all customer orders</p>
+		<p>View all customer orders</p>
 	</div>
 
 		<!-- Statistics Cards -->

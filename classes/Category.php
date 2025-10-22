@@ -20,4 +20,9 @@ class Category
 		$stmt = $this->pdo->query("SELECT * FROM categories ORDER BY name");
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
+	public function countCategories()
+	{
+		$stmt = $this->pdo->query("SELECT COUNT(*) as total FROM categories");
+		return $stmt->fetch()['total'];
+	}
 }

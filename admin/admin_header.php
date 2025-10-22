@@ -17,7 +17,9 @@ if (session_status() === PHP_SESSION_NONE) {
 	<div class="admin-layout">
 		<aside class="sidebar">
 			<div class="logo">
-				<img src="/FurniCart/assets/img/logo.png" alt="FurniCart">
+				<a href="/FurniCart/admin/dashboard.php">
+					<img src="/FurniCart/assets/img/logo.png" alt="FurniCart Logo">
+				</a>
 			</div>
 			<nav class="admin-nav">
 				<div class="admin-user">
